@@ -4,11 +4,12 @@ const morgan = require('morgan');
 require("dotenv").config()
 const OpenAI = require("openai")
 const openai = new OpenAI()
-
+const cors = require("cors")
 
 // Create an Express application
 const app = express();
 app.use(express.json());
+app.use(cors())
 
 // Middleware to parse URL-encoded bodies
 app.use(express.urlencoded({ extended: true }));
