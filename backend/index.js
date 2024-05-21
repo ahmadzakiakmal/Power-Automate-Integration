@@ -29,15 +29,18 @@ app.get('/', (req, res) => {
 });
 
 app.post("/test", async (req, res) => {
-  console.log(req.body)
-  if (Object.keys(req.body) == 0) {
-    return res.status(400).send("no email body")
-  }
+  // console.log(req.body)
+  // if (Object.keys(req.body) == 0) {
+  //   return res.status(400).send("no email body")
+  // }
+  
   try {
+    const {From, SenderName, To, Cc, Bcc, Subject, Snippet} = req.body
+    const mailData = {From, SenderName, To, Cc, Bcc, Subject, Snippet}
     const completion = await openai.chat.completions.create({
       messages: [
         { role: "system", content: "Summarize the email, with perspective, like this 'you received an email from [], about []'" },
-        { role: "user", content: JSON.stringify(req.body) ?? "{'to':'zaki@ugm.ac.id', 'from': 'arif@ugm.ac.id', snippet:'hello, when can I see you this week'}"}
+        { role: "user", content: JSON.stringify(mailData) ?? "Email body missed"}
       ],
       model: "gpt-3.5-turbo",
     });
